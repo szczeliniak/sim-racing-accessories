@@ -1,13 +1,8 @@
 #include "Handbrake.h"
 
-Handbrake::Handbrake(uint8_t reportId, uint8_t pin) : pin(pin)
+Handbrake::Handbrake(Joystick_ *joystick, uint8_t pin) : pin(pin)
 {
-    joystick = new Joystick_(reportId, JOYSTICK_TYPE_GAMEPAD, 0, 0, false, false, false, false, false, false, false, false, false, true, false);
-}
-
-Handbrake::~Handbrake()
-{
-    delete joystick;
+    this->joystick = joystick;
 }
 
 void Handbrake::setup()

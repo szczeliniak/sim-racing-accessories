@@ -1,13 +1,8 @@
 #include "LogitechShifter.h"
 
-LogitechShifter::LogitechShifter(uint8_t reportId, uint8_t axisX, uint8_t axisY, uint8_t reverseButton) : axisX(axisX), axisY(axisY), reverseButton(reverseButton)
+LogitechShifter::LogitechShifter(Joystick_ *joystick, uint8_t axisX, uint8_t axisY, uint8_t reverseButtonPin, int gearFirstButton, int gearSecondButton, int gearThirdButton, int gearFourthButton, int gearFifthButton, int gearSixthButton, int gearReverseButton) : axisX(axisX), axisY(axisY), reverseButtonPin(reverseButtonPin), gearFirstButton(gearFirstButton), gearSecondButton(gearSecondButton), gearThirdButton(gearThirdButton), gearFourthButton(gearFourthButton), gearFifthButton(gearFifthButton), gearSixthButton(gearSixthButton), gearReverseButton(gearReverseButton)
 {
-    joystick = new Joystick_(reportId, JOYSTICK_TYPE_GAMEPAD, 7, 0, false, false, false, false, false, false, false, false, false, false, false);
-}
-
-LogitechShifter::~LogitechShifter()
-{
-    delete joystick;
+    this->joystick = joystick;
 }
 
 void LogitechShifter::setup()
@@ -15,7 +10,7 @@ void LogitechShifter::setup()
     pinMode(axisX, INPUT_PULLUP); // X axis
     pinMode(axisY, INPUT_PULLUP); // Y axis
 
-    pinMode(reverseButton, INPUT);
+    pinMode(reverseButtonPin, INPUT);
 
     for (int i = 0; i < 16; i++)
     {
@@ -23,7 +18,6 @@ void LogitechShifter::setup()
     }
 
     b[DI_MODE] = 0;
-    joystick->begin();
 }
 
 void LogitechShifter::loop()
@@ -31,7 +25,7 @@ void LogitechShifter::loop()
     int x = analogRead(axisX); // X axis
     int y = analogRead(axisY); // Y axis
 
-    int _isreverse = digitalRead(reverseButton);
+    int _isreverse = digitalRead(reverseButtonPin);
     int _gear_ = 0;
 
     if (_isreverse == 1)

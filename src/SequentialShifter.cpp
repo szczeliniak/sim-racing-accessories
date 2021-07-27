@@ -1,29 +1,22 @@
 #include "SequentialShifter.h"
 
-SequentialShifter::SequentialShifter(uint8_t reportId, uint8_t up, uint8_t down) : up(up), down(down)
+SequentialShifter::SequentialShifter(Joystick_* joystick, uint8_t upButtonPin, uint8_t downButtonPin, int gearUpButton, int gearDownButton) : upButtonPin(upButtonPin), downButtonPin(downButtonPin), gearUpButton(gearUpButton), gearDownButton(gearDownButton)
 {
-    joystick = new Joystick_(reportId, JOYSTICK_TYPE_GAMEPAD, 2, 0, false, false, false, false, false, false, false, false, false, false, false);
-}
-
-SequentialShifter::~SequentialShifter()
-{
-    delete joystick;
+    this->joystick = joystick;
 }
 
 void SequentialShifter::setup()
 {
-    pinMode(up, INPUT_PULLUP);
-    pinMode(down, INPUT_PULLUP);
-
-    joystick->begin();
+    pinMode(upButtonPin, INPUT_PULLUP);
+    pinMode(downButtonPin, INPUT_PULLUP);
 };
 
 void SequentialShifter::loop()
 {
 
-    upValue = digitalRead(up);
-    downValue = digitalRead(down);
+    upValue = digitalRead(upButtonPin);
+    downValue = digitalRead(downButtonPin);
 
-    joystick->setButton(0, !upValue);
-    joystick->setButton(1, !downValue);
+    joystick->setButton(gearUpButton, !upValue);
+    joystick->setButton(gearDownButton, !downValue);
 };

@@ -12,8 +12,7 @@ private:
     uint8_t pin;
 
 public:
-    Handbrake(uint8_t reportId, uint8_t pin);
-    ~Handbrake();
+    Handbrake(Joystick_ *joystick, uint8_t pin);
     void setup();
     void loop();
 };
